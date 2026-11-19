@@ -1,0 +1,347 @@
+<title>Recursos de Datos e IA</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: single reading column, sticky section nav, link cards in a responsive grid. Tokens shared with the career site. */
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --fg: #1b2230;
+  --muted: #5c6577;
+  --line: #dde1e8;
+  --accent: #b8860b;
+  --accent-soft: #f6ecd2;
+  --c1: #2a7f86;
+  --c1-soft: #dcefef;
+  --warn: #a2482c;
+  --warn-soft: #f6e3dc;
+  --font-display: "Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --font-body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12161d; --surface: #1a2029; --fg: #e6e9ef; --muted: #9aa3b4; --line: #2b3340;
+    --accent: #e0b24a; --accent-soft: #3a3020; --c1: #5cbcc4; --c1-soft: #1c3335;
+    --warn: #e08a6c; --warn-soft: #3a241d; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12161d; --surface: #1a2029; --fg: #e6e9ef; --muted: #9aa3b4; --line: #2b3340;
+  --accent: #e0b24a; --accent-soft: #3a3020; --c1: #5cbcc4; --c1-soft: #1c3335;
+  --warn: #e08a6c; --warn-soft: #3a241d; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--font-body); font-size: 16px; line-height: 1.55;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface); }
+.wrap {
+  max-width: 1040px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+h1, h2, h3 { font-family: var(--font-display); line-height: 1.15; text-wrap: balance; margin: 0; }
+a { color: inherit; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+.eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+header { padding-block: 40px 28px; display: grid; gap: 12px; }
+header h1 { font-size: clamp(30px, 5vw, 46px); font-weight: 700; }
+header p { margin: 0; max-width: 62ch; color: var(--muted); font-size: 17px; }
+
+nav.sections {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: var(--surface); border-block: 1px solid var(--line);
+}
+nav.sections .wrap { display: flex; gap: 6px; overflow-x: auto; padding-block: 10px; scrollbar-width: none; }
+nav.sections a {
+  flex: none; text-decoration: none; font-size: 14px; font-weight: 600;
+  padding: 6px 12px; border-radius: 999px; color: var(--muted); border: 1px solid var(--line);
+}
+nav.sections a:hover { color: var(--fg); border-color: var(--accent); }
+
+main { padding-block: 32px 56px; display: grid; gap: 56px; }
+section { display: grid; gap: 20px; scroll-margin-top: 72px; }
+.section-head { display: grid; gap: 6px; max-width: 65ch; }
+.section-head h2 { font-size: clamp(24px, 3.4vw, 32px); }
+.section-head p { margin: 0; color: var(--muted); }
+
+.group { display: grid; gap: 12px; }
+.group h3 { font-size: 17px; font-weight: 700; display: flex; align-items: baseline; gap: 10px; }
+.group h3 .count { font-family: var(--font-mono); font-size: 12px; font-weight: 400; color: var(--muted); }
+
+.grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+.card {
+  display: grid; gap: 6px; align-content: start; min-width: 0;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+  padding: 16px; text-decoration: none; transition: border-color .15s, transform .15s;
+}
+a.card:hover { border-color: var(--accent); transform: translateY(-1px); }
+.card .name { font-weight: 600; font-size: 16px; display: flex; justify-content: space-between; gap: 8px; }
+.card .name::after { content: "↗"; color: var(--muted); font-weight: 400; }
+.card p { margin: 0; color: var(--muted); font-size: 15px; }
+.card .host { font-family: var(--font-mono); font-size: 12px; color: var(--c1); overflow-wrap: anywhere; }
+
+.books { display: grid; gap: 14px; }
+.book {
+  display: grid; gap: 16px; grid-template-columns: 120px 1fr; align-items: start;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px;
+}
+.book .meta { display: grid; gap: 8px; }
+.level {
+  justify-self: start; font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em;
+  text-transform: uppercase; padding: 3px 8px; border-radius: 999px;
+  background: var(--c1-soft); color: var(--c1);
+}
+.level.hard { background: var(--warn-soft); color: var(--warn); }
+.level.mid { background: var(--accent-soft); color: var(--accent); }
+.book .year { font-family: var(--font-mono); font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.book h3 { font-size: 19px; }
+.book .author { color: var(--muted); font-size: 15px; margin: 2px 0 8px; }
+.book p { margin: 0; max-width: 68ch; }
+.book .note { margin-top: 8px; font-size: 14px; color: var(--warn); }
+
+.callout {
+  display: grid; gap: 6px; background: var(--accent-soft); border-radius: 10px; padding: 16px 18px;
+}
+.callout p { margin: 0; }
+.callout a { font-weight: 600; }
+
+.warning {
+  background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--warn);
+  border-radius: 10px; padding: 20px 22px; display: grid; gap: 10px; max-width: 75ch;
+}
+.warning h2 { font-size: 22px; }
+.warning p { margin: 0; }
+.warning q { font-family: var(--font-mono); font-size: 14px; quotes: "«" "»"; color: var(--warn); white-space: nowrap; }
+
+footer { border-top: 1px solid var(--line); padding-block: 20px 32px; color: var(--muted); font-size: 14px; }
+
+@media (max-width: 560px) {
+  .book { grid-template-columns: 1fr; gap: 10px; }
+  .book .meta { grid-auto-flow: column; justify-content: start; align-items: center; gap: 12px; }
+  .warning q { white-space: normal; }
+}
+@media (prefers-reduced-motion: reduce) { a.card { transition: none; } a.card:hover { transform: none; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Coordinación · Ciencia de Datos e Inteligencia Artificial · ITEC</span>
+    <h1>Recursos para aprender datos e IA</h1>
+    <p>Páginas, libros y canales que recomendamos para seguir aprendiendo fuera de clase. Todo es gratuito, salvo que se indique lo contrario.</p>
+  </header>
+</div>
+
+<nav class="sections" aria-label="Secciones">
+  <div class="wrap">
+    <a href="#paginas">Páginas</a>
+    <a href="#libros">Libros</a>
+    <a href="#canales">Canales de YouTube</a>
+    <a href="#criterio">Cómo elegir fuentes</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <section id="paginas">
+    <div class="section-head">
+      <span class="eyebrow">Páginas recomendadas</span>
+      <h2>Para ver, tocar y practicar</h2>
+      <p>Sitios interactivos donde los conceptos se ven en movimiento, y lugares para practicar con código y datos reales.</p>
+    </div>
+
+    <div class="group">
+      <h3>Para ver los conceptos en acción <span class="count">6</span></h3>
+      <div class="grid">
+        <a class="card" href="https://marimo.io/gallery" target="_blank" rel="noopener">
+          <span class="name">Galería de marimo</span>
+          <p>Notebooks interactivos de Python sobre datos, visualización y machine learning. Se pueden abrir y modificar en el navegador.</p>
+          <span class="host">marimo.io/gallery</span>
+        </a>
+        <a class="card" href="https://mlu-explain.github.io" target="_blank" rel="noopener">
+          <span class="name">MLU-Explain</span>
+          <p>Explicaciones visuales e interactivas de machine learning hechas por Amazon: regresión, árboles de decisión, sobreajuste, validación cruzada.</p>
+          <span class="host">mlu-explain.github.io</span>
+        </a>
+        <a class="card" href="https://seeing-theory.brown.edu" target="_blank" rel="noopener">
+          <span class="name">Seeing Theory</span>
+          <p>Probabilidad y estadística con visualizaciones interactivas, de la Universidad Brown.</p>
+          <span class="host">seeing-theory.brown.edu</span>
+        </a>
+        <a class="card" href="https://setosa.io/ev" target="_blank" rel="noopener">
+          <span class="name">Setosa – Explained Visually</span>
+          <p>PCA, autovalores, regresión y matrices explicados con animaciones.</p>
+          <span class="host">setosa.io/ev</span>
+        </a>
+        <a class="card" href="https://immersivemath.com/ila" target="_blank" rel="noopener">
+          <span class="name">Immersive Math</span>
+          <p>Un libro de álgebra lineal online con figuras interactivas.</p>
+          <span class="host">immersivemath.com/ila</span>
+        </a>
+        <a class="card" href="https://r2d3.us" target="_blank" rel="noopener">
+          <span class="name">R2D3</span>
+          <p>Una introducción visual a los árboles de decisión, contada como una historia con scroll.</p>
+          <span class="host">r2d3.us</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="group">
+      <h3>Para jugar con redes neuronales <span class="count">3</span></h3>
+      <div class="grid">
+        <a class="card" href="https://playground.tensorflow.org" target="_blank" rel="noopener">
+          <span class="name">TensorFlow Playground</span>
+          <p>Entrenás una red neuronal en el navegador y ves cómo aprende.</p>
+          <span class="host">playground.tensorflow.org</span>
+        </a>
+        <a class="card" href="https://poloclub.github.io/cnn-explainer" target="_blank" rel="noopener">
+          <span class="name">CNN Explainer</span>
+          <p>Cómo funcionan por dentro las redes convolucionales.</p>
+          <span class="host">poloclub.github.io/cnn-explainer</span>
+        </a>
+        <a class="card" href="https://poloclub.github.io/transformer-explainer" target="_blank" rel="noopener">
+          <span class="name">Transformer Explainer</span>
+          <p>Cómo funcionan por dentro los modelos tipo GPT.</p>
+          <span class="host">poloclub.github.io/transformer-explainer</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="group">
+      <h3>Para practicar y copiar ejemplos <span class="count">4</span></h3>
+      <div class="grid">
+        <a class="card" href="https://www.kaggle.com/learn" target="_blank" rel="noopener">
+          <span class="name">Kaggle Learn</span>
+          <p>Cursos cortos y gratuitos de Python, pandas, visualización y ML, con notebooks listos para ejecutar.</p>
+          <span class="host">kaggle.com/learn</span>
+        </a>
+        <a class="card" href="https://calmcode.io" target="_blank" rel="noopener">
+          <span class="name">calmcode</span>
+          <p>Videos cortos de herramientas de datos en Python, de Vincent Warmerdam.</p>
+          <span class="host">calmcode.io</span>
+        </a>
+        <a class="card" href="https://python-graph-gallery.com" target="_blank" rel="noopener">
+          <span class="name">Python Graph Gallery</span>
+          <p>Cientos de gráficos con su código en matplotlib, seaborn y plotly.</p>
+          <span class="host">python-graph-gallery.com</span>
+        </a>
+        <a class="card" href="https://scikit-learn.org/stable/auto_examples" target="_blank" rel="noopener">
+          <span class="name">Ejemplos de scikit-learn</span>
+          <p>La galería oficial, con un ejemplo de código para cada algoritmo.</p>
+          <span class="host">scikit-learn.org/stable/auto_examples</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="group">
+      <h3>Para datos reales <span class="count">1</span></h3>
+      <div class="grid">
+        <a class="card" href="https://ourworldindata.org" target="_blank" rel="noopener">
+          <span class="name">Our World in Data</span>
+          <p>Datos globales con gráficos muy bien hechos. Los datasets se pueden descargar.</p>
+          <span class="host">ourworldindata.org</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="libros">
+    <div class="section-head">
+      <span class="eyebrow">Libros para el verano</span>
+      <h2>Tres lecturas, tres miradas</h2>
+      <p>Uno para programar los algoritmos desde cero, uno para la matemática que los sostiene y uno para entender para qué se usan.</p>
+    </div>
+
+    <div class="books">
+      <article class="book">
+        <div class="meta">
+          <span class="year">O'Reilly · 2015</span>
+          <span class="level">Intermedio</span>
+        </div>
+        <div>
+          <h3>Data Science from Scratch</h3>
+          <div class="author">Joel Grus</div>
+          <p>Un clásico para entender ciencia de datos programándola desde cero en Python, sin librerías que hagan la magia. Arma uno por uno los conceptos: álgebra lineal, estadística, descenso por gradiente, regresión, árboles de decisión, redes neuronales y clustering. Ideal si les gusta entender qué pasa adentro de cada algoritmo.</p>
+          <p class="note">Ojo: esta edición usa Python 2.7, así que algunas sintaxis cambian en Python 3.</p>
+        </div>
+      </article>
+
+      <article class="book">
+        <div class="meta">
+          <span class="year">Springer · 2025</span>
+          <span class="level hard">Exigente</span>
+        </div>
+        <div>
+          <h3>Linear Algebra, Data Science, and Machine Learning</h3>
+          <div class="author">Jeff Calder y Peter J. Olver</div>
+          <p>El más exigente. Arranca con vectores, matrices, ortogonalidad y autovalores, y lleva todo eso hasta machine learning: descomposición en valores singulares, PCA, optimización, grafos y redes neuronales, incluidos los transformers. Es para quienes quieran ver por qué el álgebra lineal está en el centro de la IA. Tiene nivel universitario: léanlo con paciencia y lápiz en mano.</p>
+        </div>
+      </article>
+
+      <article class="book">
+        <div class="meta">
+          <span class="year">Mercury Learning · 2024</span>
+          <span class="level mid">Accesible</span>
+        </div>
+        <div>
+          <h3>Data Science for Decision Makers</h3>
+          <div class="author">Erik L. Herman</div>
+          <p>La mirada desde el otro lado: cómo usan los datos las organizaciones para tomar decisiones. Habla de estrategia, visualización y comunicación, analítica predictiva, ética y cultura organizacional basada en datos, con casos reales. Casi no tiene matemática y se lee rápido. Sirve para entender para qué se usa todo lo que aprenden.</p>
+        </div>
+      </article>
+
+      <div class="callout">
+        <span class="eyebrow">Un tutor para cada libro</span>
+        <p>Pueden cargar el libro en <a href="https://notebooklm.google.com" target="_blank" rel="noopener">NotebookLM</a> y pedirle que les explique un capítulo, que les tome preguntas o que les resuma un tema.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="canales">
+    <div class="section-head">
+      <span class="eyebrow">Canales de YouTube</span>
+      <h2>Para seguir aprendiendo fuera de clase</h2>
+      <p>La mayoría están en inglés. Si les cuesta, activen los subtítulos automáticos en español. Igual les sirve para practicar inglés, que les va a venir bien.</p>
+    </div>
+    <div class="grid">
+      <a class="card" href="https://www.youtube.com/@3blue1brown" target="_blank" rel="noopener">
+        <span class="name">3Blue1Brown</span>
+        <p>Explicaciones visuales de álgebra lineal, cálculo y redes neuronales. Su serie «Essence of Linear Algebra» es ideal para acompañar Álgebra.</p>
+        <span class="host">youtube.com/@3blue1brown</span>
+      </a>
+      <a class="card" href="https://www.youtube.com/@IBMTechnology" target="_blank" rel="noopener">
+        <span class="name">IBM Technology</span>
+        <p>Videos cortos y muy claros sobre conceptos de IA, datos y machine learning, explicados en una pizarra.</p>
+        <span class="host">youtube.com/@IBMTechnology</span>
+      </a>
+      <a class="card" href="https://www.youtube.com/@marimo-team" target="_blank" rel="noopener">
+        <span class="name">marimo</span>
+        <p>Notebooks de Python reactivos. Busquen los videos de Vincent Warmerdam, un referente en ciencia de datos que explica con ejemplos prácticos y mucho criterio.</p>
+        <span class="host">youtube.com/@marimo-team</span>
+      </a>
+      <a class="card" href="https://www.youtube.com/@PyDataTV" target="_blank" rel="noopener">
+        <span class="name">PyData</span>
+        <p>Charlas de conferencias sobre el ecosistema de datos en Python: pandas, scikit-learn, visualización y casos reales.</p>
+        <span class="host">youtube.com/@PyDataTV</span>
+      </a>
+    </div>
+  </section>
+
+  <section id="criterio">
+    <div class="warning">
+      <span class="eyebrow">Antes de darle play</span>
+      <h2>Cómo elegir fuentes</h2>
+      <p>Como cualquier red social, YouTube funciona con algoritmos que buscan captar su atención. Por eso abundan títulos como <q>esto DESTRUYE a…</q>, <q>se viene el fin de…</q> o <q>salió esto y cambia todo</q>. Ese tono existe para que hagan clic, no para informar.</p>
+      <p>Desconfíen del sensacionalismo, comparen fuentes y quédense con quien explica cómo funcionan las cosas, no con quien solo promete revoluciones.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">Coordinación de la carrera de Ciencia de Datos e Inteligencia Artificial · ITEC</div>
+</footer>
