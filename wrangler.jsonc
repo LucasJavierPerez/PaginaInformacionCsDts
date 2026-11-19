@@ -1,7 +1,7 @@
 // Cloudflare Workers static-assets deploy: no server code, only the files from `npm run build`.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "itec-bulles",
+  "name": "recursos-datos-ia",
   "compatibility_date": "2026-10-16",
   "assets": {
     "directory": "./.output/public",
