@@ -184,6 +184,20 @@ export default defineComponent({
                     offer.note,
                   )
                 : null,
+              offer.access
+                ? h(
+                    'p',
+                    {
+                      'data-category-access': '',
+                      class: 'detail-item mt-5 text-sm leading-snug',
+                    },
+                    [
+                      offer.access.textBefore,
+                      external(offer.access.linkUrl, offer.access.linkLabel, { class: 'detail-link' }),
+                      offer.access.textAfter,
+                    ],
+                  )
+                : null,
               h(
                 'ul',
                 { class: 'detail-items mt-8', 'aria-label': `Recursos de ${offer.title}` },

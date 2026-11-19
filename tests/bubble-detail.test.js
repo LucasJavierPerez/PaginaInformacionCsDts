@@ -76,6 +76,18 @@ describe('BubbleDetail', () => {
     expect(nlm.getAttribute('rel')).toContain('noopener');
   });
 
+  it('renders the Classroom access link on libros, opening in a new tab', () => {
+    const el = mount(BubbleDetail, { offer: libros });
+    const access = el.querySelector('[data-category-access]');
+    expect(access).not.toBeNull();
+    const link = access.querySelector('a');
+    expect(link.getAttribute('href')).toBe(
+      'https://classroom.google.com/c/ODY5MDg3ODY2MzQ0/p/ODgzNTc0MjEyMTA4/details',
+    );
+    expect(link.getAttribute('target')).toBe('_blank');
+    expect(link.getAttribute('rel')).toContain('noopener');
+  });
+
   it('renders the English/subtitles note on canales and clickbait examples on criterio', () => {
     const canalesEl = mount(BubbleDetail, { offer: canales });
     expect(canalesEl.querySelector('[data-category-note]').textContent).toContain(

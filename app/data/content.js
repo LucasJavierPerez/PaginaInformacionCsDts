@@ -18,6 +18,7 @@ export const KIND_LABELS = {
 export const links = {
   officialSite: `${SITE}/inicio`,
   notebookLM: 'https://notebooklm.google.com',
+  booksClassroom: 'https://classroom.google.com/c/ODY5MDg3ODY2MzQ0/p/ODgzNTc0MjEyMTA4/details',
 };
 
 export const coordination = {
@@ -164,6 +165,12 @@ export const offers = [
     title: 'Libros para el verano',
     summary:
       'Tres lecturas, tres miradas: uno para programar los algoritmos desde cero, uno para la matemática que los sostiene y uno para entender para qué se usan.',
+    access: {
+      textBefore: 'Los encuentran en el ',
+      linkLabel: 'Classroom de la carrera',
+      linkUrl: links.booksClassroom,
+      textAfter: '.',
+    },
     books: [
       {
         title: 'Data Science from Scratch',
