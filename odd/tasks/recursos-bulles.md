@@ -41,7 +41,7 @@ the user asked for the ItecBulles experience instead.
 - [x] T2 Content model + detail panel + UI copy + tests for the 7 categories. Route: delegated (Gemini, writer trigger: 2+ non-trivial files). Risk: medium. Evidence: commit c2dc765; writer: content test RED 6 failed then GREEN, vitest 240 passed, nuxt prepare ok; parent spot check: full suite 240 passed, every resource URL of the reference page present in content.js.
 - [x] T3 Generative bubble artwork per category id (`public/bubbles/<id>.webp`). Route: delegated (Gemini, parallel, disjoint files: scripts/, public/bubbles/, assets/photos/, tests/bubble-images.test.js). Risk: medium. Evidence: commit 51aa9ae; writer: bubble-images tests 7/7, re-run byte-identical; parent spot check: tests 7/7 re-run, contact sheet inspected (7 readable, text-free illustrations).
 - [x] T4 Centerpiece default to fit the subject + README rewrite. Route: inline (two small files). Risk: medium. Evidence: centerpieces test RED (2 failed) then GREEN; full suite 22 files / 240 tests passed.
-- [ ] T5 Build (`npm run build`) and visual check of home, overworld, one bubble, static grid. Route: delegated verification.
+- [x] T5 Build (`npm run build`) and visual check of home, overworld, one bubble, static grid. Route: delegated verification (Gemini, read-only). Evidence: vitest 240 passed, nuxt generate ok, headless Chromium desktop+phone: WebGL renders, 7 bubbles, 0 console errors, 0 failed requests, no admission copy, no pdf/epub links; parent spot check: desktop overworld + libros detail screenshots inspected. Low follow-ups (inherited from ItecBulles): expanded footer drawer covers island base on desktop home; phone detail panel 72% opacity.
 
 ## Acceptance criteria
 - 7 bubbles, ids above, every resource from the reference page present with its URL.
@@ -53,4 +53,4 @@ Strategy: ask-on-risk. Forecast > 400 authored lines (content + tests). Local co
 push / remote repo / deploy are user decisions.
 
 ## Progress
-- T1-T4 done. Next: T5 build + visual check.
+- T1-T5 done. Next (user decisions): GitHub repo, hosting/deploy, sharing with students.
