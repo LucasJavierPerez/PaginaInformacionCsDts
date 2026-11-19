@@ -1,8 +1,9 @@
-# ItecBulles
+# Recursos de Datos e IA
 
-Landing page for iTec Río Cuarto prospective students: every educational offer is a bubble, built with
-real content from <https://www.itecriocuarto.org.ar/>. Design log: `docs/bitacora/bitacora.html`.
-Visual and technical reference: `docs/referencia/bulles-teardown.md` (Projet Bulles).
+Resources site from the coordination of Ciencia de Datos e Inteligencia Artificial (iTec Río Cuarto):
+every resource category is a bubble on a floating island. Built on the ItecBulles landing.
+Content source: `docs/reference/recursos-v1.html`. Visual and technical reference:
+`docs/referencia/bulles-teardown.md` (Projet Bulles). Task log: `odd/tasks/recursos-bulles.md`.
 
 ## Run
 
@@ -24,7 +25,7 @@ server rendering adds nothing. `nuxt generate` still produces a static site that
 
 ## Structure
 
-- `app/data/content.js` — content model; every offer cites its official source page. Missing facts are omitted, never invented.
+- `app/data/content.js` — content model: 7 resource categories (`offers`), each with its resources and URLs. Resources come from the reference page only; book files are never linked.
 - `app/stores/ui.js` — UI state machine: `home → intro → overworld ⇄ bubble`. Invalid transitions are no-ops; reduced motion skips the intro.
 - `app/app.vue` — app shell; one section per step (the 3D scene arrives in later tasks).
 - `app/assets/css/main.css` — Tailwind v4 tokens (`@theme`): Bulles palette, sky gradient, easings, `btn-pill`.
@@ -32,19 +33,19 @@ server rendering adds nothing. `nuxt generate` still produces a static site that
 
 ## Island centerpiece
 
-The middle of the floating island shows the iTec building by default (user decision
-D-09). The earlier prototypes can still be swapped in with the URL query `?centro=`;
+The middle of the floating island shows the circuit tree by default, which fits a data
+and AI site. The other prototypes can still be swapped in with the URL query `?centro=`;
 the centerpiece turns with the island while browsing the bubbles.
 
 | Value | Centerpiece |
 |-------|-------------|
-| `edificio` (default) | "Edificio iTec": the real building front (stone facade, green metal band, window ribbon, sign, "iTec" letters, glass door, "783"), from `assets/photos/ingreso-2027.jpg`. It does not idle-spin, so at rest the facade faces the camera. |
+| `edificio` | "Edificio iTec": the real building front (stone facade, green metal band, window ribbon, sign, "iTec" letters, glass door, "783"), modelled on the official admission photo. It does not idle-spin, so at rest the facade faces the camera. |
 | `arbol` | The original pink low-poly tree. |
-| `circuitos` | "Árbol de circuitos": a tree of right-angle circuit traces on a chip, ending in pulsing glowing nodes. |
+| `circuitos` (default) | "Árbol de circuitos": a tree of right-angle circuit traces on a chip, ending in pulsing glowing nodes. |
 | `isotipo` | "La i de iTec": the logo's "i" with a red dot and five career icons orbiting it. |
 
-Unknown values fall back to `edificio`. On the home screen the camera frames the
-building low, under the hero copy (per-aspect `HOME` / `INTRO_HOME` in
+Unknown values fall back to `circuitos`. On the home screen the camera frames the
+centerpiece low, under the hero copy (per-aspect `HOME` / `INTRO_HOME` in
 `app/scene/cameraStates.js`). Code: `app/scene/centerpieces/` (one module per
 centerpiece, each `create()` → `{ object3D, update(elapsed, delta), dispose() }`).
 

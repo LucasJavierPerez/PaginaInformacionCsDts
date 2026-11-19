@@ -17,10 +17,10 @@ describe('centerpiece selection', () => {
   });
 
   it('defaults to the iTec building (user decision D-09)', () => {
-    expect(DEFAULT_CENTERPIECE).toBe('edificio');
-    expect(resolveCenterpiece().id).toBe('edificio');
-    expect(resolveCenterpiece(null).id).toBe('edificio');
-    expect(resolveCenterpiece('').id).toBe('edificio');
+    expect(DEFAULT_CENTERPIECE).toBe('circuitos');
+    expect(resolveCenterpiece().id).toBe('circuitos');
+    expect(resolveCenterpiece(null).id).toBe('circuitos');
+    expect(resolveCenterpiece('').id).toBe('circuitos');
   });
 
   it('resolves every known value', () => {
@@ -35,10 +35,10 @@ describe('centerpiece selection', () => {
     expect(resolveCenterpiece('ÁRBOL').id).toBe('arbol');
   });
 
-  it('falls back to the building for unknown or malformed values', () => {
-    expect(resolveCenterpiece('castillo').id).toBe('edificio');
-    expect(resolveCenterpiece(42).id).toBe('edificio');
-    expect(resolveCenterpiece({}).id).toBe('edificio');
+  it('falls back to the circuit tree for unknown or malformed values', () => {
+    expect(resolveCenterpiece('castillo').id).toBe('circuitos');
+    expect(resolveCenterpiece(42).id).toBe('circuitos');
+    expect(resolveCenterpiece({}).id).toBe('circuitos');
   });
 
   it('takes the first value of a repeated query parameter', () => {
@@ -49,9 +49,9 @@ describe('centerpiece selection', () => {
     expect(centerpieceFromSearch('?centro=arbol').id).toBe('arbol');
     expect(centerpieceFromSearch('?foo=1&centro=circuitos').id).toBe('circuitos');
     expect(centerpieceFromSearch('?centro=isotipo').id).toBe('isotipo');
-    expect(centerpieceFromSearch('').id).toBe('edificio');
-    expect(centerpieceFromSearch('?centro=nada').id).toBe('edificio');
-    expect(centerpieceFromSearch(undefined).id).toBe('edificio');
+    expect(centerpieceFromSearch('').id).toBe('circuitos');
+    expect(centerpieceFromSearch('?centro=nada').id).toBe('circuitos');
+    expect(centerpieceFromSearch(undefined).id).toBe('circuitos');
   });
 
   it('keeps the building facing the camera at rest (no idle spin)', () => {

@@ -1,6 +1,6 @@
 // Centerpiece prototypes for the middle of the island. Chosen with the URL query
-// `?centro=arbol|edificio|circuitos|isotipo`; anything else falls back to the iTec
-// building, the default since the user picked it (D-09).
+// `?centro=arbol|edificio|circuitos|isotipo`; anything else falls back to the
+// circuit tree, the default for the data and AI resources site.
 // Every module exports create() -> { object3D, update(elapsed, delta), dispose() },
 // built in island-local space (grass top at y ≈ 0.12, inside a radius of ~1.6).
 // Optional `idleSpin: false` keeps the island from slowly spinning on its own.
@@ -9,7 +9,7 @@ import { create as createBuilding } from './building.js';
 import { create as createCircuitTree } from './circuitTree.js';
 import { create as createIsotype } from './isotype.js';
 
-export const DEFAULT_CENTERPIECE = 'edificio';
+export const DEFAULT_CENTERPIECE = 'circuitos';
 
 export const CENTERPIECES = Object.freeze([
   Object.freeze({ id: 'arbol', label: 'Árbol', create: createTree }),

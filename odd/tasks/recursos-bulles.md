@@ -38,9 +38,9 @@ the user asked for the ItecBulles experience instead.
 
 ## Tasks
 - [x] T1 Bootstrap new repo from ItecBulles, install, baseline tests. Route: inline (mechanical). Evidence: commit 777d89d, vitest 22 files / 244 tests passed.
-- [ ] T2 Content model + detail panel + UI copy + tests for the 7 categories. Route: delegated (Gemini, writer trigger: 2+ non-trivial files).
-- [ ] T3 Generative bubble artwork per category id (`public/bubbles/<id>.webp`). Route: delegated (Gemini, parallel, disjoint files: scripts/, public/bubbles/, assets/photos/, tests/bubble-images.test.js).
-- [ ] T4 Centerpiece default to fit the subject + README rewrite. Route: inline after T2/T3.
+- [x] T2 Content model + detail panel + UI copy + tests for the 7 categories. Route: delegated (Gemini, writer trigger: 2+ non-trivial files). Risk: medium. Evidence: commit c2dc765; writer: content test RED 6 failed then GREEN, vitest 240 passed, nuxt prepare ok; parent spot check: full suite 240 passed, every resource URL of the reference page present in content.js.
+- [x] T3 Generative bubble artwork per category id (`public/bubbles/<id>.webp`). Route: delegated (Gemini, parallel, disjoint files: scripts/, public/bubbles/, assets/photos/, tests/bubble-images.test.js). Risk: medium. Evidence: commit 51aa9ae; writer: bubble-images tests 7/7, re-run byte-identical; parent spot check: tests 7/7 re-run, contact sheet inspected (7 readable, text-free illustrations).
+- [x] T4 Centerpiece default to fit the subject + README rewrite. Route: inline (two small files). Risk: medium. Evidence: centerpieces test RED (2 failed) then GREEN; full suite 22 files / 240 tests passed.
 - [ ] T5 Build (`npm run build`) and visual check of home, overworld, one bubble, static grid. Route: delegated verification.
 
 ## Acceptance criteria
@@ -53,4 +53,4 @@ Strategy: ask-on-risk. Forecast > 400 authored lines (content + tests). Local co
 push / remote repo / deploy are user decisions.
 
 ## Progress
-- T1 done. T2 and T3 launched in parallel.
+- T1-T4 done. Next: T5 build + visual check.
