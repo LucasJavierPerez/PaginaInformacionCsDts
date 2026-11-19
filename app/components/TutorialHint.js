@@ -2,7 +2,7 @@
 // decides when it shows and records the dismissal (ui.completeTutorial).
 // It sits in the document flow where the parent places it (under the overworld
 // header, under the detail's back button), so it never floats over a primary
-// action such as "Quiero + Info" or the bubble title pill.
+// action or heading.
 import { defineComponent, h } from 'vue';
 
 export default defineComponent({

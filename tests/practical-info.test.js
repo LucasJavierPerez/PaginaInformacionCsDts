@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { createApp, h, nextTick } from 'vue';
+import { createApp, h } from 'vue';
 import PracticalInfo from '../app/components/PracticalInfo.js';
-import { campuses, contacts, links } from '../app/data/content.js';
+import { coordination, links } from '../app/data/content.js';
 
 let app;
 let root;
@@ -26,40 +26,26 @@ describe('PracticalInfo', () => {
     const el = mount();
     const footer = el.querySelector('footer');
     expect(footer).not.toBeNull();
-    expect(el.querySelector('h2').textContent).toBe('Información práctica');
+    expect(el.querySelector('h2').textContent).toBe('Cómo usar esta página');
   });
 
-  it('always shows phone, email and every WhatsApp line as text and links', () => {
+  it('always shows coordination name and official iTec site link in the bar', () => {
     const el = mount({ expanded: false });
     const text = el.querySelector('.practical-info__bar').textContent;
-    expect(text).toContain(contacts.phone.display);
-    expect(text).toContain(contacts.email.address);
-    for (const line of contacts.whatsapp) expect(text).toContain(line.display);
-    expect(hrefs(el)).toEqual(
-      expect.arrayContaining([contacts.phone.href, contacts.email.href, ...contacts.whatsapp.map((w) => w.url)]),
-    );
+    expect(text).toContain(coordination.name);
+    expect(hrefs(el)).toContain(links.officialSite);
   });
 
-  it('shows every campus with address and published hours when expanded', () => {
+  it('shows guidance columns and no admission/login copy when expanded', () => {
     const el = mount({ expanded: true });
     const text = el.textContent;
-    for (const campus of campuses) {
-      expect(text).toContain(campus.name);
-      expect(text).toContain(campus.address);
-      for (const hours of campus.hours) expect(text).toContain(hours);
-    }
-  });
-
-  it('lists current-student links (horarios, calendario, SiTec) and socials, with no login UI', () => {
-    const el = mount({ expanded: true });
-    expect(hrefs(el)).toEqual(
-      expect.arrayContaining([links.schedules, links.calendar, links.sitec, ...contacts.socials.map((s) => s.url)]),
-    );
+    expect(text).toContain('Todo es gratuito, salvo que se indique lo contrario.');
+    expect(text).toContain(coordination.footer);
     expect(el.querySelector('input, form')).toBeNull();
-    expect(el.textContent).not.toMatch(/iniciar sesi[oó]n|contraseña/i);
+    expect(text).not.toMatch(/ingreso|inscripci[oó]n|WhatsApp|iniciar sesi[oó]n/i);
   });
 
-  it('keeps the campuses in the DOM but hidden when collapsed, and toggles', async () => {
+  it('keeps the guide panel in the DOM but hidden when collapsed, and toggles', () => {
     let expanded = false;
     const el = mount({
       get expanded() {

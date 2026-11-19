@@ -1,6 +1,6 @@
 // Accessible way into the WebGL bubbles (scene mode). The panel is visually hidden
-// until the visitor opens it with the skip-link style "Ver lista de propuestas"
-// toggle or tabs into it. Real buttons named after each offer; ←/→ (and ↑/↓,
+// until the visitor opens it with the skip-link style "Ver lista de recursos"
+// toggle or tabs into it. Real buttons named after each category; ←/→ (and ↑/↓,
 // Home/End) move focus, which glides the carousel; Enter/Space opens.
 import { defineComponent, h, ref, computed } from 'vue';
 
@@ -41,7 +41,7 @@ export default defineComponent({
     };
 
     return () =>
-      h('nav', { 'aria-label': 'Lista de propuestas', class: 'offer-list' }, [
+      h('nav', { 'aria-label': 'Lista de recursos', class: 'offer-list' }, [
         h(
           'button',
           {
@@ -51,7 +51,7 @@ export default defineComponent({
             'aria-controls': PANEL_ID,
             onClick: () => (expanded.value = !expanded.value),
           },
-          expanded.value ? 'Ocultar lista de propuestas' : 'Ver lista de propuestas',
+          expanded.value ? 'Ocultar lista de recursos' : 'Ver lista de recursos',
         ),
         h(
           'ul',

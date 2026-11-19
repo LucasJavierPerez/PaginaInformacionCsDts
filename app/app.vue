@@ -1,7 +1,7 @@
 <script setup>
 import { computed, nextTick, onMounted, onBeforeUnmount, ref, watch } from 'vue';
 import { useUiStore } from '~/stores/ui.js';
-import { institution, offers } from '~/data/content.js';
+import { coordination, offers } from '~/data/content.js';
 import StaticBubbleGrid from '~/components/StaticBubbleGrid.js';
 import BubbleDetail from '~/components/BubbleDetail.js';
 import TutorialHint from '~/components/TutorialHint.js';
@@ -22,8 +22,8 @@ let disconnectSound = null;
 let sound = null;
 const syncMotion = () => ui.applySystemReducedMotion(motionQuery.matches);
 
-// Practical info drawer: open on the desktop home screen only, compact bar on
-// phones and on every other step (it must never cover the hero CTA).
+// Guide drawer: open on the desktop home screen only, compact bar on phones
+// and on every other step (it must never cover the hero CTA).
 const infoExpanded = ref(false);
 const viewport = () => ({ width: window.innerWidth, height: window.innerHeight });
 watch(
@@ -31,7 +31,7 @@ watch(
   (step) => (infoExpanded.value = defaultInfoExpanded(step, viewport())),
 );
 
-// Polite screen-reader announcement of every step / offer change.
+// Polite screen-reader announcement of every step / category change.
 const announcement = ref('');
 watch(
   () => [ui.currentStep, ui.activeOffer?.title],
@@ -47,17 +47,17 @@ const tutorial = computed(() => {
       name: 'overworld',
       message: ui.sceneActive
         ? 'Arrastrá para explorar, tocá una burbuja para entrar.'
-        : 'Tocá una burbuja para entrar y conocer cada propuesta.',
+        : 'Tocá una burbuja para entrar y ver cada categoría de recursos.',
     };
   }
   if (ui.currentStep === 'bubble' && ui.isTutorialPending('bubble')) {
-    return { name: 'bubble', message: 'Explorá la información y volvé cuando quieras.' };
+    return { name: 'bubble', message: 'Explorá los recursos y volvé cuando quieras.' };
   }
   return null;
 });
 
 // Closing the detail returns focus to the bubble (list button or static bubble)
-// of the offer last shown; focusing a list button also glides the carousel to it.
+// of the category last shown; focusing a list button also glides the carousel to it.
 watch(
   () => ui.activeBubbleId,
   async (id, previous) => {
@@ -106,16 +106,20 @@ onBeforeUnmount(() => {
       class="pointer-events-none relative z-10 flex min-h-dvh flex-col items-center justify-center px-6 pt-20 text-center [&>section]:pointer-events-auto"
       style="padding-bottom: calc(var(--practical-info-height, 4rem) + 1.5rem)"
     >
-      <h1 v-if="ui.currentStep !== 'home'" class="sr-only">{{ institution.name }} · Propuestas educativas</h1>
+      <h1 v-if="ui.currentStep !== 'home'" class="sr-only">{{ coordination.eyebrow }} · {{ coordination.title }}</h1>
 
       <section v-if="ui.currentStep === 'home'" aria-labelledby="home-title" class="max-w-2xl">
-        <p class="mb-4 text-lg font-medium">{{ institution.name }} · {{ institution.motto }}</p>
-        <h1 id="home-title" class="text-6xl leading-[0.9] font-bold sm:text-8xl">Elegí tu burbuja</h1>
-        <p class="mx-auto mt-6 max-w-md text-lg leading-snug">
-          Cada propuesta del iTec es una burbuja. Explorá las carreras y encontrá la tuya.
+        <p class="mb-4 text-sm font-semibold tracking-wider uppercase opacity-90 sm:text-base">
+          {{ coordination.eyebrow }}
+        </p>
+        <h1 id="home-title" class="text-4xl leading-[0.98] font-bold sm:text-6xl">
+          {{ coordination.title }}
+        </h1>
+        <p class="mx-auto mt-6 max-w-xl text-lg leading-snug">
+          {{ coordination.subtitle }}
         </p>
         <button type="button" class="btn-pill mt-10 text-lg" @click="ui.startExperience()">
-          Descubrir las propuestas
+          Explorar los recursos
         </button>
         <p class="mt-4 text-sm opacity-80">Mejor con auriculares</p>
       </section>
@@ -138,7 +142,7 @@ onBeforeUnmount(() => {
       >
         <!-- WebGL bubbles live in the canvas. OfferList is the keyboard / screen-reader
              way in; focusing one of its buttons glides the carousel. -->
-        <h2 id="overworld-title" class="text-3xl font-bold sm:text-4xl">Propuestas</h2>
+        <h2 id="overworld-title" class="text-3xl font-bold sm:text-4xl">Recursos</h2>
         <p class="mt-2 text-base">Arrastrá o usá la rueda para explorar. Tocá una burbuja para entrar.</p>
         <OfferList :offers="offers" @open="ui.openBubble" @focus="ui.focusBubble" />
         <TutorialHint
@@ -150,8 +154,8 @@ onBeforeUnmount(() => {
       </section>
 
       <section v-else-if="ui.currentStep === 'overworld'" aria-labelledby="overworld-title" class="py-16">
-        <!-- Static mode (no WebGL or reduced motion): CSS bubbles with the offer photos. -->
-        <h2 id="overworld-title" class="mb-8 text-4xl font-bold">Propuestas</h2>
+        <!-- Static mode (no WebGL or reduced motion): CSS bubbles with category artwork. -->
+        <h2 id="overworld-title" class="mb-8 text-4xl font-bold">Recursos</h2>
         <TutorialHint
           v-if="tutorial?.name === 'overworld'"
           class="mb-8"
@@ -161,7 +165,7 @@ onBeforeUnmount(() => {
         <StaticBubbleGrid :offers="offers" @open="ui.openBubble" />
       </section>
 
-      <!-- Inner bubble: offer detail over the (tinted) canvas. -->
+      <!-- Inner bubble: resource category detail over the (tinted) canvas. -->
       <BubbleDetail
         v-else-if="ui.currentStep === 'bubble' && ui.activeOffer"
         :offer="ui.activeOffer"

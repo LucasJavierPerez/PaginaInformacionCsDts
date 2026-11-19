@@ -23,7 +23,7 @@ afterEach(() => {
 });
 
 describe('OfferList', () => {
-  it('renders one real button per offer named after the offer', () => {
+  it('renders one real button per category named after the category', () => {
     const el = mount();
     const buttons = offerButtons(el);
     expect(buttons).toHaveLength(offers.length);
@@ -34,10 +34,10 @@ describe('OfferList', () => {
     });
   });
 
-  it('has a "Ver lista de propuestas" toggle that reveals the list panel', async () => {
+  it('has a "Ver lista de recursos" toggle that reveals the list panel', async () => {
     const el = mount();
     const toggle = el.querySelector('button[aria-controls]');
-    expect(toggle.textContent).toContain('Ver lista de propuestas');
+    expect(toggle.textContent).toContain('Ver lista de recursos');
     expect(toggle.getAttribute('aria-expanded')).toBe('false');
     const panel = el.querySelector(`#${toggle.getAttribute('aria-controls')}`);
     expect(panel.classList.contains('sr-only')).toBe(true);
@@ -56,7 +56,7 @@ describe('OfferList', () => {
     expect(panel.classList.contains('sr-only')).toBe(false);
   });
 
-  it('moves focus with the arrow keys, wrapping, and emits focus with the offer id', async () => {
+  it('moves focus with the arrow keys, wrapping, and emits focus with the category id', async () => {
     const onFocus = vi.fn();
     const el = mount({ onFocus });
     const buttons = offerButtons(el);
@@ -74,7 +74,7 @@ describe('OfferList', () => {
     expect(onFocus).toHaveBeenLastCalledWith(offers.at(-1).id);
   });
 
-  it('emits open with the offer id when a button is activated', () => {
+  it('emits open with the category id when a button is activated', () => {
     const onOpen = vi.fn();
     const el = mount({ onOpen });
     offerButtons(el)[3].click();

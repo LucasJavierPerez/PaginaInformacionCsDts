@@ -17,12 +17,13 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'es' },
-      title: 'iTec Río Cuarto · Ingreso 2027',
+      title: 'Recursos de Datos e IA · iTec',
       meta: [
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         {
           name: 'description',
-          content: 'Conocé las propuestas educativas del Instituto Tecnológico Río Cuarto.',
+          content:
+            'Páginas, libros y canales recomendados por la Coordinación de Ciencia de Datos e Inteligencia Artificial del iTec Río Cuarto.',
         },
       ],
       link: [

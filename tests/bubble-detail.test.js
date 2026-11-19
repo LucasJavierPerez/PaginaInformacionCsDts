@@ -2,7 +2,7 @@ import { describe, it, expect, vi, afterEach } from 'vitest';
 import { createApp, h, nextTick, ref } from 'vue';
 import BubbleDetail from '../app/components/BubbleDetail.js';
 import TutorialHint from '../app/components/TutorialHint.js';
-import { offers, links, contacts, KIND_LABELS } from '../app/data/content.js';
+import { offers, KIND_LABELS } from '../app/data/content.js';
 
 let app;
 let root;
@@ -21,64 +21,84 @@ afterEach(() => {
   app = null;
 });
 
-const mecatronica = offers.find((offer) => offer.id === 'mecatronica');
+const conceptos = offers.find((offer) => offer.id === 'conceptos');
+const libros = offers.find((offer) => offer.id === 'libros');
+const canales = offers.find((offer) => offer.id === 'canales');
+const criterio = offers.find((offer) => offer.id === 'criterio');
 
 describe('BubbleDetail', () => {
   it('renders kind label, title, summary and illustration', () => {
-    const el = mount(BubbleDetail, { offer: mecatronica });
-    expect(el.textContent).toContain(KIND_LABELS.carrera);
-    expect(el.querySelector('h2').textContent).toBe(mecatronica.title);
-    expect(el.textContent).toContain(mecatronica.summary);
+    const el = mount(BubbleDetail, { offer: conceptos });
+    expect(el.textContent).toContain(KIND_LABELS.sitios);
+    expect(el.querySelector('h2').textContent).toBe(conceptos.title);
+    expect(el.textContent).toContain(conceptos.summary);
     const img = el.querySelector('img');
-    expect(img.getAttribute('src')).toBe(mecatronica.image);
-    expect(img.getAttribute('alt')).toBe(mecatronica.imageAlt);
+    expect(img.getAttribute('src')).toBe(conceptos.image);
+    expect(img.getAttribute('alt')).toBe(conceptos.imageAlt);
   });
 
   it('is a labelled region', () => {
-    const el = mount(BubbleDetail, { offer: mecatronica });
+    const el = mount(BubbleDetail, { offer: conceptos });
     const region = el.querySelector('section');
     const heading = el.querySelector('h2');
     expect(region.getAttribute('aria-labelledby')).toBe(heading.id);
   });
 
-  it('renders one info item per real detail with all its values', () => {
-    const el = mount(BubbleDetail, { offer: mecatronica });
+  it('renders one external resource card per link with name, description and host', () => {
+    const el = mount(BubbleDetail, { offer: conceptos });
     const items = el.querySelectorAll('[data-detail-item]');
-    expect(items).toHaveLength(mecatronica.details.length);
-    expect(items[0].textContent).toContain('Título');
-    expect(items[0].textContent).toContain('Técnico en Mecatrónica.');
-    expect(items[2].querySelectorAll('li')).toHaveLength(3);
+    expect(items).toHaveLength(conceptos.resources.length);
+    const links = [...el.querySelectorAll('[data-resource-link]')];
+    expect(links).toHaveLength(conceptos.resources.length);
+    links.forEach((a, i) => {
+      expect(a.getAttribute('href')).toBe(conceptos.resources[i].url);
+      expect(a.getAttribute('target')).toBe('_blank');
+      expect(a.getAttribute('rel')).toContain('noopener');
+      expect(a.textContent).toContain(conceptos.resources[i].name);
+    });
+    expect(items[0].textContent).toContain(conceptos.resources[0].description);
+    expect(items[0].textContent).toContain(conceptos.resources[0].host);
   });
 
-  it('links the single primary CTA to the form in a new tab', () => {
-    const el = mount(BubbleDetail, { offer: mecatronica });
-    const cta = el.querySelector('[data-cta="primary"]');
-    expect(cta.getAttribute('href')).toBe(links.cta.url);
-    expect(cta.textContent).toContain('Quiero + Info');
-    expect(cta.getAttribute('target')).toBe('_blank');
-    expect(cta.getAttribute('rel')).toContain('noopener');
+  it('renders books with author, publisherYear, level, Python 2.7 note and NotebookLM callout', () => {
+    const el = mount(BubbleDetail, { offer: libros });
+    const items = el.querySelectorAll('[data-detail-item]');
+    expect(items).toHaveLength(3);
+    expect(el.textContent).toContain('Joel Grus');
+    expect(el.textContent).toContain("O'Reilly · 2015");
+    expect(el.textContent).toContain('Intermedio');
+    expect(el.textContent).toContain('Python 2.7');
+    const callout = el.querySelector('[data-category-callout]');
+    expect(callout).not.toBeNull();
+    const nlm = callout.querySelector('a');
+    expect(nlm.getAttribute('href')).toBe('https://notebooklm.google.com');
+    expect(nlm.getAttribute('target')).toBe('_blank');
+    expect(nlm.getAttribute('rel')).toContain('noopener');
   });
 
-  it('offers the WhatsApp line for the kind and the official page', () => {
-    const el = mount(BubbleDetail, { offer: mecatronica });
-    const hrefs = [...el.querySelectorAll('a')].map((a) => a.getAttribute('href'));
-    expect(hrefs).toContain(contacts.whatsapp[0].url);
-    expect(hrefs).toContain(mecatronica.source);
-    [...el.querySelectorAll('a[target="_blank"]')].forEach((a) =>
-      expect(a.getAttribute('rel')).toContain('noopener'),
+  it('renders the English/subtitles note on canales and clickbait examples on criterio', () => {
+    const canalesEl = mount(BubbleDetail, { offer: canales });
+    expect(canalesEl.querySelector('[data-category-note]').textContent).toContain(
+      'subtítulos automáticos en español',
     );
+    app.unmount();
+    root.remove();
+
+    const criterioEl = mount(BubbleDetail, { offer: criterio });
+    expect(criterioEl.textContent).toContain('esto DESTRUYE a');
+    expect(criterioEl.textContent).toContain('se viene el fin de');
+    expect(criterioEl.textContent).toContain('salió esto y cambia todo');
   });
 
-  it('shows extra official links when the offer has them', () => {
-    const ada = offers.find((offer) => offer.id === 'secundario-ada-byron');
-    const el = mount(BubbleDetail, { offer: ada });
-    const hrefs = [...el.querySelectorAll('a')].map((a) => a.getAttribute('href'));
-    expect(hrefs).toContain(ada.extraLinks[0].url);
+  it('contains no admission CTA copy or WhatsApp links', () => {
+    const el = mount(BubbleDetail, { offer: conceptos });
+    expect(el.querySelector('[data-cta="primary"]')).toBeNull();
+    expect(el.textContent).not.toMatch(/Quiero \+ Info|WhatsApp|inscripci[oó]n/i);
   });
 
   it('closes with the back button and with Escape', async () => {
     const onClose = vi.fn();
-    const el = mount(BubbleDetail, { offer: mecatronica, onClose });
+    const el = mount(BubbleDetail, { offer: conceptos, onClose });
     el.querySelector('[data-action="close"]').click();
     expect(onClose).toHaveBeenCalledTimes(1);
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
@@ -87,14 +107,14 @@ describe('BubbleDetail', () => {
 
   it('stops listening for Escape once unmounted', () => {
     const onClose = vi.fn();
-    mount(BubbleDetail, { offer: mecatronica, onClose });
+    mount(BubbleDetail, { offer: conceptos, onClose });
     app.unmount();
     app = null;
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
     expect(onClose).not.toHaveBeenCalled();
   });
 
-  it('navigates to the previous and next offers with wrap-around', () => {
+  it('navigates to the previous and next categories with wrap-around', () => {
     const onNavigate = vi.fn();
     const el = mount(BubbleDetail, { offer: offers[0], onNavigate });
     const prev = el.querySelector('[data-action="prev"]');
@@ -106,7 +126,7 @@ describe('BubbleDetail', () => {
     expect(onNavigate).toHaveBeenNthCalledWith(2, offers[1].id);
   });
 
-  it('moves focus to the heading on open and when the offer changes', async () => {
+  it('moves focus to the heading on open and when the category changes', async () => {
     const current = ref(offers[0]);
     const el = mount(BubbleDetail, () => ({ offer: current.value }));
     await nextTick();
@@ -137,21 +157,21 @@ describe('TutorialHint', () => {
 
 describe('BubbleDetail composition (T7 fixes)', () => {
   it('drops the HTML illustration when the 3D bubble is on screen', () => {
-    const el = mount(BubbleDetail, { offer: mecatronica, sceneActive: true });
+    const el = mount(BubbleDetail, { offer: conceptos, sceneActive: true });
     expect(el.querySelector('.detail-orb')).toBeNull();
     expect(el.querySelector('.bubble-detail').classList.contains('has-scene')).toBe(true);
   });
 
   it('keeps the HTML illustration in static mode', () => {
-    const el = mount(BubbleDetail, { offer: mecatronica, sceneActive: false });
-    expect(el.querySelector('.detail-orb img').getAttribute('src')).toBe(mecatronica.image);
+    const el = mount(BubbleDetail, { offer: conceptos, sceneActive: false });
+    expect(el.querySelector('.detail-orb img').getAttribute('src')).toBe(conceptos.image);
   });
 
   it('renders the hint slot right after the back button, before the title', () => {
     root = document.createElement('div');
     document.body.appendChild(root);
     app = createApp({
-      render: () => h(BubbleDetail, { offer: mecatronica }, { hint: () => h('p', { 'data-hint': '' }, 'Tip') }),
+      render: () => h(BubbleDetail, { offer: conceptos }, { hint: () => h('p', { 'data-hint': '' }, 'Tip') }),
     });
     app.mount(root);
     const hint = root.querySelector('[data-hint]');

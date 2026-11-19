@@ -1,399 +1,261 @@
-// Content model for the landing page.
-// Every fact below was taken from the official site (https://www.itecriocuarto.org.ar/)
-// on 2026-10-16. Each offer cites the page it came from in `source`.
-// Fields the official site does not state (duration, title, schedule...) are omitted
-// on purpose: never fill them with guesses.
-// `image` is the official photo cropped and gently enhanced by `npm run bubble-images`
-// (see assets/photos/sources.json); `imageAlt` describes only what that photo shows.
+// Content model for the DS & AI resources site.
+// Copy and URLs come verbatim from docs/reference/recursos-v1.html.
+// Book files (PDF/EPUB) are never linked or hosted here.
+// `image` points to deterministic artwork generated into `public/bubbles/<id>.webp`.
 
 const SITE = 'https://www.itecriocuarto.org.ar';
 
-export const KINDS = [
-  'ingreso',
-  'carrera',
-  'tecnicatura',
-  'trayecto',
-  'secundario',
-  'capacitacion',
-  'labs',
-  'empleo',
-];
+export const KINDS = ['sitios', 'libros', 'canales', 'criterio'];
 
-/** Human-readable label for each kind (Spanish UI copy). */
+/** Human-readable label for each category kind (Spanish UI copy). */
 export const KIND_LABELS = {
-  ingreso: 'Inscripción',
-  carrera: 'Carrera de nivel superior',
-  tecnicatura: 'Tecnicatura de nivel superior',
-  trayecto: 'Trayecto formativo',
-  secundario: 'Nivel secundario',
-  capacitacion: 'Capacitación continua',
-  labs: 'Programa educativo',
-  empleo: 'Portal de trabajo',
+  sitios: 'Páginas recomendadas',
+  libros: 'Lecturas recomendadas',
+  canales: 'Canales de YouTube',
+  criterio: 'Antes de darle play',
 };
 
 export const links = {
-  cta: {
-    label: 'Quiero + Info',
-    url: 'https://docs.google.com/forms/d/e/1FAIpQLScjhSUcMVsUobJ4uUEUr3kAA7-VBLYUTbhhV01EtWf8Lcz3xw/viewform',
-  },
-  adaByronAdmission: 'https://forms.gle/x2TwoqM415tbsTdt8',
-  pccCursos: 'https://cursos.itecriocuarto.org.ar',
-  sitec: 'https://sitec.itecriocuarto.org.ar',
-  schedules: `${SITE}/alumnos/horarios-de-cursado`,
-  calendar: `${SITE}/alumnos/calendario`,
   officialSite: `${SITE}/inicio`,
-  healthCertificateTemplate:
-    'https://drive.google.com/file/d/1h6mXHwVZ-nfQlVyFy2waOhRcftfEsguS/view?usp=sharing',
-  transcriptTemplate:
-    'https://drive.google.com/file/d/0Bzj-DEUAlG8IQUNaSkR3WC03cDA/view?resourcekey=0-FCsjFbl0KUXJZcz2rKSy3g',
+  notebookLM: 'https://notebooklm.google.com',
 };
 
-export const institution = {
-  name: 'iTec Río Cuarto',
-  fullName: 'Instituto Tecnológico Río Cuarto',
-  motto: 'Educación para transformar',
-  about: [
-    'Somos una Institución de Educación Técnica Superior con más de treinta años de trayectoria.',
-    'El Instituto Tecnológico Río Cuarto procura que los estudiantes adquieran competencias laborales y sociales.',
-    'Nuestro principal objetivo es lograr que los futuros profesionales se inserten en el mercado laboral como individuos autónomos, innovadores y creativos.',
-  ],
-  degree:
-    'El iTec está adscripto al sistema oficial: el título es terciario de nivel superior, oficial y de validez nacional.',
-  source: `${SITE}/inicio`,
+export const coordination = {
+  name: 'Coordinación de Ciencia de Datos e Inteligencia Artificial · iTec Río Cuarto',
+  footer: 'Coordinación de la carrera de Ciencia de Datos e Inteligencia Artificial · iTec Río Cuarto',
+  eyebrow: 'Coordinación · Ciencia de Datos e IA · iTec',
+  title: 'Recursos para aprender datos e IA',
+  subtitle:
+    'Páginas, libros y canales que recomendamos para seguir aprendiendo fuera de clase. Todo es gratuito, salvo que se indique lo contrario.',
+  officialSite: links.officialSite,
 };
-
-export const campuses = [
-  {
-    name: 'Sede Centro',
-    address: 'Constitución 716, Barrio Centro, Río Cuarto',
-    hours: ['Mañana de 8:00 a 12:30 hs', 'Tarde de 17:00 a 21:00 hs'],
-  },
-  {
-    name: 'Sede Campus',
-    address: 'Wenceslao Tejerina Norte 783, Barrio Villa Dalcar, Río Cuarto',
-    hours: ['Lunes a jueves, de 19:00 a 22:00 hs'],
-  },
-];
-
-export const contacts = {
-  phone: { display: '0358-4643036', href: 'tel:+543584643036' },
-  email: { address: 'informes@itecriocuarto.org.ar', href: 'mailto:informes@itecriocuarto.org.ar' },
-  whatsapp: [
-    { label: 'Informes de carreras', display: '358 560-6036', url: 'https://wa.me/5493585606036' },
-    { label: 'Informes de cursos', display: '358 560-6052', url: 'https://wa.me/5493585606052' },
-  ],
-  socials: [
-    { label: 'Facebook', url: 'https://www.facebook.com/iTecRioCuarto' },
-    { label: 'Instagram', url: 'https://www.instagram.com/itecriocuarto/' },
-    { label: 'TikTok', url: 'https://www.tiktok.com/@itecriocuarto' },
-  ],
-};
-
-// Admission requirements shared by every higher-level career (/alumnos/ingresantes
-// and each career page list the same six items).
-const HIGHER_ED_REQUIREMENTS = [
-  'Fotocopia del DNI',
-  '3 fotos 4x4',
-  'Constancia de CUIL',
-  'Partida de nacimiento legalizada',
-  'Certificado de salud psicofísica',
-  'Fotocopia autenticada del certificado analítico del secundario, o certificado de estudio en trámite',
-];
-
-const requirementsDetail = { label: 'Requisitos de inscripción', value: HIGHER_ED_REQUIREMENTS };
 
 export const offers = [
   {
-    id: 'ingreso-2027',
-    kind: 'ingreso',
-    title: 'Ingreso 2027',
-    summary:
-      'Las inscripciones a las carreras están abiertas. Dejanos tus datos y el equipo se comunica para responder tus dudas.',
-    details: [
+    id: 'conceptos',
+    kind: 'sitios',
+    title: 'Conceptos en acción',
+    summary: 'Sitios interactivos donde los conceptos se ven en movimiento.',
+    resources: [
       {
-        label: 'Cursillo de ingreso',
-        value: [
-          'En febrero, presencial, en el horario de cursada (desde las 19:30 hs).',
-          'No es eliminatorio, pero es obligatorio.',
-          'Incluye contenidos de la carrera y la adaptación a la vida institucional.',
-        ],
+        name: 'Galería de marimo',
+        url: 'https://marimo.io/gallery',
+        host: 'marimo.io/gallery',
+        description:
+          'Notebooks interactivos de Python sobre datos, visualización y machine learning. Se pueden abrir y modificar en el navegador.',
       },
       {
-        label: 'Cursada',
-        value: 'Presencial, de lunes a viernes de 19:30 a 23:30 hs, en el Campus (Wenceslao Tejerina Norte 783).',
-      },
-      { label: 'Título', value: 'Terciario de nivel superior, oficial y de validez nacional.' },
-      {
-        label: '¿Te quedan materias del secundario?',
-        value:
-          'Podés inscribirte como alumno condicional y regularizar hasta julio del año de ingreso.',
+        name: 'MLU-Explain',
+        url: 'https://mlu-explain.github.io',
+        host: 'mlu-explain.github.io',
+        description:
+          'Explicaciones visuales e interactivas de machine learning hechas por Amazon: regresión, árboles de decisión, sobreajuste, validación cruzada.',
       },
       {
-        label: 'Mayores de 25 sin secundario terminado',
-        value:
-          'Con el CBU aprobado (1°, 2° y 3° año) podés inscribirte; el coordinador te indica los prácticos para cumplir la condicionalidad, con acompañamiento pedagógico.',
+        name: 'Seeing Theory',
+        url: 'https://seeing-theory.brown.edu',
+        host: 'seeing-theory.brown.edu',
+        description: 'Probabilidad y estadística con visualizaciones interactivas, de la Universidad Brown.',
       },
-      requirementsDetail,
+      {
+        name: 'Setosa – Explained Visually',
+        url: 'https://setosa.io/ev',
+        host: 'setosa.io/ev',
+        description: 'PCA, autovalores, regresión y matrices explicados con animaciones.',
+      },
+      {
+        name: 'Immersive Math',
+        url: 'https://immersivemath.com/ila',
+        host: 'immersivemath.com/ila',
+        description: 'Un libro de álgebra lineal online con figuras interactivas.',
+      },
+      {
+        name: 'R2D3',
+        url: 'https://r2d3.us',
+        host: 'r2d3.us',
+        description: 'Una introducción visual a los árboles de decisión, contada como una historia con scroll.',
+      },
     ],
-    source: `${SITE}/alumnos/ingresantes`,
-    image: '/bubbles/ingreso-2027.webp',
-    imageAlt: 'Foto del frente del edificio del iTec, con su cartel y la entrada principal',
+    image: '/bubbles/conceptos.webp',
+    imageAlt: 'Ilustración abstracta de curvas matemáticas y nodos interactivos en movimiento',
   },
   {
-    id: 'desarrollo-de-software',
-    kind: 'carrera',
-    title: 'Desarrollo de Software',
-    summary:
-      'Producís software de punta a punta: diseño, construcción, depuración, optimización y mantenimiento, y apps multiplataforma para escritorio, celulares y la web.',
-    details: [
+    id: 'redes-neuronales',
+    kind: 'sitios',
+    title: 'Redes neuronales',
+    summary: 'Para jugar con redes neuronales y ver cómo funcionan por dentro.',
+    resources: [
       {
-        label: 'Perfil profesional',
-        value: [
-          'Producir software (programas, módulos, objetos): diseño, construcción, depuración, optimización y mantenimiento.',
-          'Crear apps multiplataforma para escritorio, tablets, smartphones y la web.',
-          'Brindar soporte y mantenimiento de hardware, software y redes.',
-          'Planificar y dirigir proyectos informáticos.',
-        ],
+        name: 'TensorFlow Playground',
+        url: 'https://playground.tensorflow.org',
+        host: 'playground.tensorflow.org',
+        description: 'Entrenás una red neuronal en el navegador y ves cómo aprende.',
       },
       {
-        label: 'Tecnologías',
-        value: 'Python, JavaScript, PHP, HTML5, CSS3, React, Vue, NodeJS, Django, Laravel, Git, SQL Server, MySQL, Linux y Android, entre otras.',
+        name: 'CNN Explainer',
+        url: 'https://poloclub.github.io/cnn-explainer',
+        host: 'poloclub.github.io/cnn-explainer',
+        description: 'Cómo funcionan por dentro las redes convolucionales.',
       },
-      { label: 'Modalidad', value: 'Presencial o Campus Virtual (contenido asincrónico 24 hs y clases sincrónicas en vivo).' },
-      requirementsDetail,
+      {
+        name: 'Transformer Explainer',
+        url: 'https://poloclub.github.io/transformer-explainer',
+        host: 'poloclub.github.io/transformer-explainer',
+        description: 'Cómo funcionan por dentro los modelos tipo GPT.',
+      },
     ],
-    source: `${SITE}/carreras/software`,
-    image: '/bubbles/desarrollo-de-software.webp',
-    imageAlt: 'Foto de una tableta con código de programación en pantalla',
+    image: '/bubbles/redes-neuronales.webp',
+    imageAlt: 'Ilustración abstracta de capas y conexiones de una red neuronal',
   },
   {
-    id: 'inteligencia-artificial',
-    kind: 'carrera',
-    title: 'Inteligencia Artificial',
-    summary:
-      'Analizás grandes cantidades de datos para extraer información valiosa, construís modelos predictivos y comunicás resultados.',
-    details: [
-      { label: 'Modalidad', value: 'Presencial - Combinado.' },
+    id: 'practicar',
+    kind: 'sitios',
+    title: 'Practicar y copiar ejemplos',
+    summary: 'Lugares para practicar con código y copiar ejemplos listos para usar.',
+    resources: [
       {
-        label: 'Qué vas a hacer',
-        value: [
-          'Recolectar y preparar datos de distintas fuentes.',
-          'Analizar datos con técnicas estadísticas y de IA.',
-          'Construir modelos predictivos.',
-          'Comunicar resultados con visualizaciones e informes.',
-          'Colaborar con equipos de negocio y tecnología.',
-        ],
+        name: 'Kaggle Learn',
+        url: 'https://www.kaggle.com/learn',
+        host: 'kaggle.com/learn',
+        description:
+          'Cursos cortos y gratuitos de Python, pandas, visualización y ML, con notebooks listos para ejecutar.',
       },
       {
-        label: 'Dónde trabajar',
-        value: 'Startups (fintech, healthtech, e-commerce), consultoras tecnológicas y empresas de software.',
+        name: 'calmcode',
+        url: 'https://calmcode.io',
+        host: 'calmcode.io',
+        description: 'Videos cortos de herramientas de datos en Python, de Vincent Warmerdam.',
       },
-      requirementsDetail,
+      {
+        name: 'Python Graph Gallery',
+        url: 'https://python-graph-gallery.com',
+        host: 'python-graph-gallery.com',
+        description: 'Cientos de gráficos con su código en matplotlib, seaborn y plotly.',
+      },
+      {
+        name: 'Ejemplos de scikit-learn',
+        url: 'https://scikit-learn.org/stable/auto_examples',
+        host: 'scikit-learn.org/stable/auto_examples',
+        description: 'La galería oficial, con un ejemplo de código para cada algoritmo.',
+      },
     ],
-    source: `${SITE}/carreras/inteligencia-artificial`,
-    image: '/bubbles/inteligencia-artificial.webp',
-    imageAlt: 'Foto de las letras AI iluminadas sobre un circuito electrónico',
+    image: '/bubbles/practicar.webp',
+    imageAlt: 'Ilustración abstracta de bloques de código y gráficos de datos',
   },
   {
-    id: 'mecatronica',
-    kind: 'carrera',
-    title: 'Mecatrónica',
-    summary:
-      'Integrás mecánica, informática y electrónica para diseñar, supervisar y reparar sistemas en maquinarias y procesos industriales.',
-    details: [
-      { label: 'Título', value: 'Técnico en Mecatrónica.' },
+    id: 'datos-reales',
+    kind: 'sitios',
+    title: 'Datos reales',
+    summary: 'Datos globales con gráficos muy bien hechos y datasets descargables.',
+    resources: [
       {
-        label: 'Modalidad',
-        value: 'Método combinado: clases virtuales en vivo, cursado presencial en el campus y prácticas profesionalizantes desde el primer año.',
+        name: 'Our World in Data',
+        url: 'https://ourworldindata.org',
+        host: 'ourworldindata.org',
+        description: 'Datos globales con gráficos muy bien hechos. Los datasets se pueden descargar.',
       },
-      {
-        label: 'Perfil profesional',
-        value: [
-          'Proyectar dispositivos, equipos y sistemas automatizados.',
-          'Diseñar, instalar y mantener procesos de control de máquinas o líneas de producción.',
-          'Diseñar, programar y operar sistemas automáticos para plantas industriales.',
-        ],
-      },
-      {
-        label: 'Campo laboral',
-        value: [
-          'Industrias y empresas de servicios (mecánica, electrónica, automatización, calidad, alimentación).',
-          'Organismos gubernamentales y ONG de desarrollo.',
-          'Emprendimientos propios de proyectos industriales.',
-        ],
-      },
-      requirementsDetail,
     ],
-    source: `${SITE}/carreras/mecatronica`,
-    image: '/bubbles/mecatronica.webp',
-    imageAlt: 'Foto de una mano usando una tableta de control junto a maquinaria industrial',
+    image: '/bubbles/datos-reales.webp',
+    imageAlt: 'Ilustración abstracta de mapas, series temporales y datos globales',
   },
   {
-    id: 'marketing-digital',
-    kind: 'carrera',
-    title: 'Marketing Digital',
+    id: 'libros',
+    kind: 'libros',
+    title: 'Libros para el verano',
     summary:
-      'Analizás tendencias de consumo, planificás marketing en medios no tradicionales y posicionás marcas en redes sociales y e-commerce.',
-    details: [
-      { label: 'Carrera', value: 'Tecnicatura Superior en Marketing Digital.' },
+      'Tres lecturas, tres miradas: uno para programar los algoritmos desde cero, uno para la matemática que los sostiene y uno para entender para qué se usan.',
+    books: [
       {
-        label: 'Modalidad',
-        value: 'Método combinado: clases virtuales en vivo, cursado presencial en el campus y prácticas profesionalizantes.',
+        title: 'Data Science from Scratch',
+        author: 'Joel Grus',
+        publisherYear: "O'Reilly · 2015",
+        level: 'Intermedio',
+        levelTone: 'default',
+        description:
+          'Un clásico para entender ciencia de datos programándola desde cero en Python, sin librerías que hagan la magia. Arma uno por uno los conceptos: álgebra lineal, estadística, descenso por gradiente, regresión, árboles de decisión, redes neuronales y clustering. Ideal si les gusta entender qué pasa adentro de cada algoritmo.',
+        note: 'Ojo: esta edición usa Python 2.7, así que algunas sintaxis cambian en Python 3.',
       },
       {
-        label: 'Perfil profesional',
-        value: [
-          'Analizar tendencias de consumo y organizar planes de marketing en medios no tradicionales.',
-          'Identificar productos o servicios para e-commerce y crear estrategias de posicionamiento de marca en redes.',
-          'Gestionar tu área de trabajo, en relación de dependencia o en emprendimientos propios.',
-        ],
+        title: 'Linear Algebra, Data Science, and Machine Learning',
+        author: 'Jeff Calder y Peter J. Olver',
+        publisherYear: 'Springer · 2025',
+        level: 'Exigente',
+        levelTone: 'hard',
+        description:
+          'El más exigente. Arranca con vectores, matrices, ortogonalidad y autovalores, y lleva todo eso hasta machine learning: descomposición en valores singulares, PCA, optimización, grafos y redes neuronales, incluidos los transformers. Es para quienes quieran ver por qué el álgebra lineal está en el centro de la IA. Tiene nivel universitario: léanlo con paciencia y lápiz en mano.',
       },
-      requirementsDetail,
+      {
+        title: 'Data Science for Decision Makers',
+        author: 'Erik L. Herman',
+        publisherYear: 'Mercury Learning · 2024',
+        level: 'Accesible',
+        levelTone: 'mid',
+        description:
+          'La mirada desde el otro lado: cómo usan los datos las organizaciones para tomar decisiones. Habla de estrategia, visualización y comunicación, analítica predictiva, ética y cultura organizacional basada en datos, con casos reales. Casi no tiene matemática y se lee rápido. Sirve para entender para qué se usa todo lo que aprenden.',
+      },
     ],
-    source: `${SITE}/carreras/marketing-digital`,
-    image: '/bubbles/marketing-digital.webp',
-    imageAlt: 'Foto de un escritorio con una computadora portátil, un teléfono y notas adhesivas',
+    callout: {
+      label: 'Un tutor para cada libro',
+      textBefore: 'Pueden cargar el libro en ',
+      linkLabel: 'NotebookLM',
+      linkUrl: links.notebookLM,
+      textAfter: ' y pedirle que les explique un capítulo, que les tome preguntas o que les resuma un tema.',
+    },
+    image: '/bubbles/libros.webp',
+    imageAlt: 'Ilustración abstracta de volúmenes geométricos que evocan libros abiertos',
   },
   {
-    id: 'turismo-y-hoteleria',
-    kind: 'carrera',
-    title: 'Turismo y Hotelería',
-    summary:
-      'La actividad turística ofrece muchas posibilidades laborales, con distintos niveles de responsabilidad en gestión y planificación.',
-    details: [
+    id: 'canales',
+    kind: 'canales',
+    title: 'Canales de YouTube',
+    summary: 'Para seguir aprendiendo fuera de clase.',
+    note: 'La mayoría están en inglés. Si les cuesta, activen los subtítulos automáticos en español. Igual les sirve para practicar inglés, que les va a venir bien.',
+    resources: [
       {
-        label: 'Modalidad',
-        value: 'Método combinado: clases virtuales en vivo, cursado presencial en el campus y prácticas profesionalizantes desde el primer año.',
+        name: '3Blue1Brown',
+        url: 'https://www.youtube.com/@3blue1brown',
+        host: 'youtube.com/@3blue1brown',
+        description:
+          'Explicaciones visuales de álgebra lineal, cálculo y redes neuronales. Su serie «Essence of Linear Algebra» es ideal para acompañar Álgebra.',
       },
       {
-        label: 'Campo laboral',
-        value: [
-          'Empresas de alojamiento',
-          'Empresas de gastronomía',
-          'Servicios de entretenimiento, descanso y cultura',
-          'Empresas de intermediación',
-          'Transporte y logística',
-        ],
+        name: 'IBM Technology',
+        url: 'https://www.youtube.com/@IBMTechnology',
+        host: 'youtube.com/@IBMTechnology',
+        description:
+          'Videos cortos y muy claros sobre conceptos de IA, datos y machine learning, explicados en una pizarra.',
       },
-      requirementsDetail,
+      {
+        name: 'marimo',
+        url: 'https://www.youtube.com/@marimo-team',
+        host: 'youtube.com/@marimo-team',
+        description:
+          'Notebooks de Python reactivos. Busquen los videos de Vincent Warmerdam, un referente en ciencia de datos que explica con ejemplos prácticos y mucho criterio.',
+      },
+      {
+        name: 'PyData',
+        url: 'https://www.youtube.com/@PyDataTV',
+        host: 'youtube.com/@PyDataTV',
+        description:
+          'Charlas de conferencias sobre el ecosistema de datos en Python: pandas, scikit-learn, visualización y casos reales.',
+      },
     ],
-    source: `${SITE}/carreras/turismo`,
-    image: '/bubbles/turismo-y-hoteleria.webp',
-    imageAlt: 'Foto de una cámara de fotos con su correa sobre un mapa',
+    image: '/bubbles/canales.webp',
+    imageAlt: 'Ilustración abstracta de ondas audiovisuales y pantallas en capas',
   },
   {
-    id: 'operario-electromecanico',
-    kind: 'trayecto',
-    title: 'Operario de Mantenimiento Electromecánico',
-    summary:
-      'Trayecto formativo para jóvenes y adultos que buscan un oficio técnico, y para trabajadores que quieren mejorar sus competencias.',
-    details: [
-      { label: 'Duración', value: '10 meses (280 horas).' },
-      { label: 'Inicio', value: 'Septiembre de 2026.' },
-      { label: 'Cursada', value: 'Lunes y jueves de 20 a 23:30 hs.' },
-      { label: 'Modalidad', value: 'Presencial con orientación práctica, en el Campus iTec.' },
-      {
-        label: 'Contenidos',
-        value:
-          'Electricidad básica, instalaciones domiciliarias e industriales, mecánica general, motores eléctricos, automatización básica, neumática y proyecto integrador.',
-      },
-      { label: 'Al egresar', value: 'Podés interpretar planos eléctricos y mecánicos.' },
-    ],
-    source: `${SITE}/trayectos/Operario_electromecanico`,
-    image: '/bubbles/operario-electromecanico.webp',
-    imageAlt: 'Foto de una mano operando una tableta junto a maquinaria industrial',
-  },
-  {
-    id: 'secundario-ada-byron',
-    kind: 'secundario',
-    title: 'Secundario Ada Byron',
-    summary:
-      'Una propuesta educativa integral con orientación en Programación y Robótica, complementada con artes, literatura y ciencias humanas.',
-    details: [
-      { label: 'Orientación', value: 'Programación y Robótica, con una mirada crítica, reflexiva y ética sobre la tecnología.' },
-      { label: 'Años disponibles', value: '1º, 2º y 3º año. En el ciclo lectivo 2027 abre 4º año.' },
-      {
-        label: 'Admisión',
-        value: [
-          'Completá el formulario de preinscripción y subí la documentación.',
-          'La escuela revisa la documentación y las vacantes, y coordina una entrevista con el estudiante y ambos responsables.',
-          'Si hay vacante, se indica la documentación a presentar y un plazo.',
-          'Administración agenda la firma del contrato y el pago de la matrícula.',
-        ],
-      },
-      {
-        label: 'Documentación',
-        value: [
-          'Fotocopia del DNI',
-          'Partida de nacimiento',
-          'Certificado de vacunas al día',
-          'Ficha de inscripción firmada por ambos responsables',
-          'Libre deuda de la escuela anterior',
-        ],
-      },
-      { label: 'Sin vacante', value: 'Quienes completan el proceso pueden quedar en lista de espera.' },
-    ],
-    extraLinks: [{ label: 'Formulario de admisión Ada Byron', url: links.adaByronAdmission }],
-    source: `${SITE}/adabyron`,
-    image: '/bubbles/secundario-ada-byron.webp',
-    imageAlt: 'Foto de la entrada del edificio del iTec con su cartel',
-  },
-  {
-    id: 'capacitacion-continua',
-    kind: 'capacitacion',
-    title: 'Capacitación Continua',
-    summary:
-      'Cursos para adquirir nuevas habilidades en un área específica y desarrollarlas de manera práctica y teórica.',
-    details: [
-      {
-        label: 'Algunos cursos 2026',
-        value: [
-          'Modelado 3D de Interiores con SketchUP',
-          'AutoCAD para Planos Eléctricos',
-          'Introducción al uso de la Inteligencia Artificial',
-        ],
-      },
-    ],
-    extraLinks: [{ label: 'Ver cursos en PCC Cursos', url: links.pccCursos }],
-    source: links.pccCursos,
-    image: '/bubbles/capacitacion-continua.webp',
-    imageAlt: 'Foto del frente del edificio del iTec con su cartel',
-  },
-  {
-    id: 'itec-labs',
-    kind: 'labs',
-    title: 'iTec Labs',
-    summary:
-      'Programa educativo donde estudiantes avanzados de Desarrollo de Software diseñan sistemas para empresas y organizaciones reales.',
-    details: [
-      { label: 'Desde', value: '2019, dentro de la Tecnicatura Superior en Desarrollo de Software.' },
-      {
-        label: 'Cómo se trabaja',
-        value: 'Con Scrum, en equipos de 3 a 6 estudiantes desarrolladores autoorganizados, acompañados por docentes responsables.',
-      },
-      {
-        label: 'Algunos clientes',
-        value: 'Mellitus Salud, Sindicato de la Carne, TecnoRed Energía, Oficio Constructora, Grupo Terra y Cermed SRL, entre otros.',
-      },
-    ],
-    source: `${SITE}/itec-labs`,
-    image: '/bubbles/itec-labs.webp',
-    imageAlt: 'Foto de un diagrama de flujo dibujado a mano sobre papel',
-  },
-  {
-    id: 'portal-de-trabajo',
-    kind: 'empleo',
-    title: 'Portal de Trabajo',
-    summary:
-      'Conecta a alumnos y exalumnos de las carreras del iTec y del PCC con empresas e instituciones que ofrecen puestos.',
-    details: [
-      {
-        label: 'Cómo participar',
-        value: 'Completás tu perfil profesional y tus preferencias laborales, y podés postularte a ofertas publicadas. El iTec te contacta cuando hay ofertas que coinciden con tu perfil.',
-      },
-    ],
-    source: `${SITE}/bolsadetrabajo`,
-    image: '/bubbles/portal-de-trabajo.webp',
-    imageAlt: 'Foto de computadoras portátiles y un vaso de café sobre una mesa de trabajo',
+    id: 'criterio',
+    kind: 'criterio',
+    title: 'Cómo elegir fuentes',
+    summary: 'Antes de darle play: cómo distinguir fuentes que explican del sensacionalismo.',
+    guidance: {
+      eyebrow: 'Antes de darle play',
+      paragraphs: [
+        'Como cualquier red social, YouTube funciona con algoritmos que buscan captar su atención. Por eso abundan títulos como «esto DESTRUYE a…», «se viene el fin de…» o «salió esto y cambia todo». Ese tono existe para que hagan clic, no para informar.',
+        'Desconfíen del sensacionalismo, comparen fuentes y quédense con quien explica cómo funcionan las cosas, no con quien solo promete revoluciones.',
+      ],
+    },
+    image: '/bubbles/criterio.webp',
+    imageAlt: 'Ilustración abstracta de una brújula y filtros de lectura crítica',
   },
 ];

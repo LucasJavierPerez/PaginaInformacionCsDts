@@ -1,11 +1,10 @@
-// Persistent "Información práctica" footer: phone, email and WhatsApp are always on
-// screen as selectable text + links; the drawer adds campuses with their published
-// hours, socials and the links for current students (D-05: SiTec as a plain link,
-// no login UI, D-01). The parent opens the drawer by default only on the desktop
-// home screen (see data/layout.js). Its rendered height is published as the
+// Persistent guide footer: introduces the DS & AI career coordination,
+// states how to browse the page, and links to the official iTec site.
+// The parent opens the drawer by default only on the desktop home screen
+// (see data/layout.js). Its rendered height is published as the
 // `--practical-info-height` CSS variable so the UI above can keep clear of it.
 import { defineComponent, h, onBeforeUnmount, onMounted, ref } from 'vue';
-import { campuses, contacts, links } from '../data/content.js';
+import { coordination, links } from '../data/content.js';
 
 const PANEL_ID = 'practical-info-panel';
 
@@ -19,12 +18,6 @@ const link = (href, text, external = false) =>
     },
     text,
   );
-
-const STUDENT_LINKS = [
-  { label: 'Horarios de cursado', url: links.schedules },
-  { label: 'Calendario académico', url: links.calendar },
-  { label: 'SiTec', url: links.sitec },
-];
 
 export default defineComponent({
   name: 'PracticalInfo',
@@ -51,9 +44,6 @@ export default defineComponent({
       document.documentElement.style.removeProperty('--practical-info-height');
     });
 
-    // Phones keep the bar to two short lines: prefixes stay for screen readers only.
-    const phoneHidden = (text) => h('span', { class: 'max-md:sr-only' }, text);
-
     const column = (title, children) =>
       h('div', { class: 'practical-info__column' }, [h('h3', { class: 'practical-info__subtitle' }, title), ...children]);
 
@@ -67,25 +57,16 @@ export default defineComponent({
             hidden: !props.expanded,
           },
           [
-            ...campuses.map((campus) =>
-              column(campus.name, [
-                h('p', campus.address),
-                h('ul', campus.hours.map((hours) => h('li', hours))),
-              ]),
-            ),
-            column('WhatsApp', [
-              h(
-                'ul',
-                contacts.whatsapp.map((line) => h('li', [`${line.label}: `, link(line.url, line.display, true)])),
-              ),
-              h(
-                'p',
-                { class: 'practical-info__socials' },
-                contacts.socials.flatMap((social, i) => [i ? ' · ' : '', link(social.url, social.label, true)]),
-              ),
+            column('Qué vas a encontrar', [
+              h('p', 'Páginas, libros y canales que recomendamos para seguir aprendiendo fuera de clase.'),
             ]),
-            column('Alumnos del iTec', [
-              h('ul', STUDENT_LINKS.map((item) => h('li', [link(item.url, item.label, true)]))),
+            column('Acceso', [h('p', 'Todo es gratuito, salvo que se indique lo contrario.')]),
+            column('Cómo usar esta página', [
+              h('p', 'Cada burbuja agrupa una categoría de recursos. Entrá para abrir los enlaces o consultar los libros.'),
+            ]),
+            column('Coordinación', [
+              h('p', coordination.footer),
+              h('p', { class: 'mt-1' }, [link(links.officialSite, 'Sitio oficial del iTec', true)]),
             ]),
           ],
         ),
@@ -93,19 +74,12 @@ export default defineComponent({
           h(
             'h2',
             { id: 'practical-info-title', class: 'practical-info__title max-md:sr-only' },
-            'Información práctica',
+            'Cómo usar esta página',
           ),
           h('p', { class: 'practical-info__contacts' }, [
-            h('span', [phoneHidden('Tel. '), link(contacts.phone.href, contacts.phone.display)]),
-            h('span', [link(contacts.email.href, contacts.email.address)]),
-            ...contacts.whatsapp.map((line) => {
-              const topic = line.label.replace('Informes de ', '');
-              return h('span', [
-                phoneHidden('WhatsApp '),
-                `${topic.charAt(0).toUpperCase()}${topic.slice(1)}: `,
-                link(line.url, line.display, true),
-              ]);
-            }),
+            h('span', coordination.name),
+            h('span', { class: 'max-md:sr-only' }, 'Todo es gratuito, salvo que se indique lo contrario.'),
+            h('span', [link(links.officialSite, 'Sitio del iTec', true)]),
           ]),
           h(
             'button',
@@ -120,9 +94,9 @@ export default defineComponent({
               h(
                 'span',
                 { class: 'max-md:sr-only' },
-                props.expanded ? 'Ocultar sedes y horarios' : 'Sedes, horarios y alumnos',
+                props.expanded ? 'Ocultar guía' : 'Sobre esta guía',
               ),
-              h('span', { class: 'md:hidden', 'aria-hidden': 'true' }, props.expanded ? 'Ocultar' : 'Sedes'),
+              h('span', { class: 'md:hidden', 'aria-hidden': 'true' }, props.expanded ? 'Ocultar' : 'Guía'),
             ],
           ),
         ]),

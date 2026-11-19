@@ -101,12 +101,12 @@ describe('MotionToggle', () => {
 describe('announcementFor', () => {
   const title = offers[2].title;
 
-  it('announces an opened offer, also on prev / next', () => {
+  it('announces an opened category, also on prev / next', () => {
     expect(announcementFor({ step: 'bubble', previousStep: 'overworld', offerTitle: title })).toBe(
-      `Propuesta abierta: ${title}`,
+      `Categoría abierta: ${title}`,
     );
     expect(announcementFor({ step: 'bubble', previousStep: 'bubble', offerTitle: title })).toBe(
-      `Propuesta abierta: ${title}`,
+      `Categoría abierta: ${title}`,
     );
   });
 
@@ -114,9 +114,9 @@ describe('announcementFor', () => {
     expect(announcementFor({ step: 'overworld', previousStep: 'bubble' })).toBe('Volviste a las burbujas');
   });
 
-  it('announces arriving at the offers with their count', () => {
-    expect(announcementFor({ step: 'overworld', previousStep: 'intro', offerCount: 11 })).toBe(
-      'Estás en las propuestas: 11 burbujas para explorar.',
+  it('announces arriving at the resources with their count', () => {
+    expect(announcementFor({ step: 'overworld', previousStep: 'intro', offerCount: 7 })).toBe(
+      'Estás en los recursos: 7 burbujas para explorar.',
     );
   });
 
