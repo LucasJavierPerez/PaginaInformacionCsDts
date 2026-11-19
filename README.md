@@ -50,29 +50,18 @@ centerpiece, each `create()` → `{ object3D, update(elapsed, delta), dispose() 
 
 ## Bubble images
 
-Each bubble shows a real photo from the official site, cropped to a square and gently enhanced by a
-deterministic `sharp` script (no image model, byte-identical output on re-run).
+Each bubble displays an abstract, text-free illustration generated deterministically from SVG and rasterized
+with `sharp` to `public/bubbles/<id>.webp` (1024×1024, byte-identical on re-run):
 
-- `assets/photos/<offer-id>.<ext>` — the official photos (large PNGs re-encoded as JPEG q92).
-- `assets/photos/sources.json` — per offer: photo `url`, the `page` it appears on, the square `crop` used
-  (chosen to avoid the titles printed over the header photos), and a `note`. `generic: true` marks offers
-  whose page has no photo of its own and reuse another official photo.
-- `scripts/bubble-images.mjs` — writes `public/bubbles/<offer-id>.webp` (1024×1024):
-  - `--mode photo` (default, used by the site): crop → resize → contrast restore (several headers carry a
-    white wash) → mild saturation → slight sharpen. Crops under 400 source pixels (`capacitacion-continua`,
-    `itec-labs`) cannot be sharp at 1024 px, so they get a soft upscale (light blur, no sharpening) instead.
-  - `--mode illustration` (kept, not used): the earlier flat, stylized look (median simplification →
-    palette gradient map → Sobel ink outlines → seeded grain).
+- `scripts/bubble-images.mjs` — uses a seeded PRNG (`mulberry32`) and the `@theme` / bubble palette
+  (`app/assets/css/main.css`, `app/scene/bubbles/colors.js`) to render one topic motif inside the central
+  safe circle for each category (`conceptos`, `redes-neuronales`, `practicar`, `datos-reales`, `libros`,
+  `canales`, `criterio`), with no text, logos, or external photo dependencies.
 
 ```bash
-npm run bubble-images                                # regenerate public/bubbles/*.webp from the photos
-npm run illustrate                                   # same, stylized illustration mode (not used by the site)
+npm run bubble-images                                # regenerate public/bubbles/*.webp
 node scripts/contact-sheet.mjs /tmp/contact-sheet.png  # review all images masked in circles
 ```
-
-To change a photo, replace the file in `assets/photos/`, update its `sources.json` entry (url, page, crop),
-run `npm run bubble-images`, and update the offer's `imageAlt` in `app/data/content.js` to describe the photo.
-The signed `googleusercontent.com` URLs may expire; the committed originals are the reproducible input.
 
 ## Sound
 
